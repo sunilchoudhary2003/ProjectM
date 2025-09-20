@@ -20,11 +20,12 @@
             flex-direction: column;
             align-items: center;
             padding: 20px;
+            overflow-x: auto;
+            min-width: 900px;
         }
         
         .container {
-            max-width: 900px;
-            width: 100%;
+            width: 900px;
             background: white;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -143,14 +144,12 @@
         
         .calculator {
             display: flex;
-            flex-wrap: wrap;
             gap: 30px;
             justify-content: space-between;
         }
         
         .calc-section {
-            flex: 1;
-            min-width: 300px;
+            width: 48%;
             background: #fffaf0;
             padding: 20px;
             border-radius: 15px;
@@ -251,17 +250,6 @@
             color: #3498db;
             text-align: center;
             max-width: 250px;
-        }
-        
-        @media (max-width: 768px) {
-            .calculator {
-                flex-direction: column;
-            }
-            
-            .input-group {
-                flex-direction: column;
-                align-items: center;
-            }
         }
     </style>
 </head>
