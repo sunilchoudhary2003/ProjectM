@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghee Calculator</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #e67e22;
+            margin-bottom: 15px;
+            font-size: 2.5rem;
+        }
+        
+        .emoji-title {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        .main-qr-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .toggle-qr-btn {
+            background: #3498db;
+            margin-bottom: 15px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        .toggle-qr-btn:hover {
+            background: #2980b9;
+        }
+        
+        .main-qr-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background: #fffaf0;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .price-control {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #fffaf0;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .input-group {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        input {
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            width: 200px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            border-color: #e67e22;
+            outline: none;
+        }
+        
+        button {
+            background: #e67e22;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #d35400;
+        }
+        
+        .download-btn {
+            background: #27ae60;
+            margin-top: 15px;
+        }
+        
+        .download-btn:hover {
+            background: #219653;
+        }
+        
+        .calculator {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: space-between;
+        }
+        
+        .calc-section {
+            flex: 1;
+            min-width: 300px;
+            background: #fffaf0;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: #e67e22;
+            font-size: 1.5rem;
+        }
+        
+        .section-title span {
+            font-size: 2rem;
+        }
+        
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        
+        .input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .input-row input {
+            flex: 1;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2rem;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .result-value {
+            font-weight: bold;
+            color: #e67e22;
+            font-size: 1.5rem;
+            margin-top: 5px;
+        }
+        
+        .qr-container {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            margin: 15px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .current-price {
+            margin-top: 10px;
+            font-size: 1rem;
+            color: #7f8c8d;
+        }
+        
+        .price-value {
+            font-weight: bold;
+            color: #e67e22;
+        }
+        
+        .details {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            text-align: center;
+            color: #7f8c8d;
+        }
+        
+        .payment-info {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #3498db;
+            text-align: center;
+            max-width: 250px;
+        }
+        
+        @media (max-width: 768px) {
+            .calculator {
+                flex-direction: column;
+            }
+            
+            .input-group {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="emoji-title">🧈 Ghee Calculator</div>
+        <p>Calculate ghee quantity and amount easily</p>
+    </header>
+    
+    <div class="container">
+        <div class="main-qr-section">
+            <button id="toggleQRBtn" class="toggle-qr-btn">Show/Hide QR Code</button>
+            <div id="mainQRContainer" class="main-qr-container" style="display: none;">
+                <div class="section-title">
+                    <span>💳</span> Payment QR Code
+                </div>
+                <div id="mainQR" class="qr-code"></div>
+                <div class="details">Scan to pay any amount</div>
+                <div class="details">UPI ID: 9828179884-1@okbizaxis</div>
+            </div>
+        </div>
+        
+        <div class="price-control">
+            <div class="section-title">
+                <span>💰</span> Current Price Control
+            </div>
+            <div class="input-group">
+                <input type="number" id="priceInput" placeholder="Enter current price (₹)" min="1">
+                <button id="setPriceBtn">Set Price</button>
+            </div>
+            <div class="current-price">Current price: <span id="currentPriceValue" class="price-value">680</span> ₹/kg</div>
+        </div>
+        
+        <div class="calculator">
+            <div class="calc-section">
+                <div class="section-title">
+                    <span>⚖️</span> Ghee to Amount
+                </div>
+                <div class="input-container">
+                    <div class="input-row">
+                        <input type="number" id="gheeInput" placeholder="Ghee in grams" min="1">
+                        <button id="calculateAmountBtn">Calculate</button>
+                    </div>
+                </div>
+                <div class="result">
+                    <div>Amount to pay:</div>
+                    <div id="amountResult" class="result-value">0 ₹</div>
+                    <div id="gheeDetails" class="details"></div>
+                </div>
+                <div class="qr-container">
+                    <div>QR Code for Payment</div>
+                    <div id="gheeQR" class="qr-code"></div>
+                    <div class="payment-info">Details will appear in payment app's remark field</div>
+                    <button id="downloadGheeQR" class="download-btn">Download QR with Details</button>
+                </div>
+            </div>
+            
+            <div class="calc-section">
+                <div class="section-title">
+                    <span>💵</span> Amount to Ghee
+                </div>
+                <div class="input-container">
+                    <div class="input-row">
+                        <input type="number" id="amountInput" placeholder="Amount in ₹" min="1">
+                        <button id="calculateGheeBtn">Calculate</button>
+                    </div>
+                </div>
+                <div class="result">
+                    <div>Ghee you'll get:</div>
+                    <div id="gheeResult" class="result-value">0 g</div>
+                    <div id="amountDetails" class="details"></div>
+                </div>
+                <div class="qr-container">
+                    <div>QR Code for Payment</div>
+                    <div id="amountQR" class="qr-code"></div>
+                    <div class="payment-info">Details will appear in payment app's remark field</div>
+                    <button id="downloadAmountQR" class="download-btn">Download QR with Details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize variables
+        let currentPrice = 680;
+        const upiId = '9828179884-1@okbizaxis';
+        
+        // DOM elements
+        const toggleQRBtn = document.getElementById('toggleQRBtn');
+        const mainQRContainer = document.getElementById('mainQRContainer');
+        const mainQR = document.getElementById('mainQR');
+        const priceInput = document.getElementById('priceInput');
+        const setPriceBtn = document.getElementById('setPriceBtn');
+        const currentPriceValue = document.getElementById('currentPriceValue');
+        const gheeInput = document.getElementById('gheeInput');
+        const amountInput = document.getElementById('amountInput');
+        const calculateAmountBtn = document.getElementById('calculateAmountBtn');
+        const calculateGheeBtn = document.getElementById('calculateGheeBtn');
+        const amountResult = document.getElementById('amountResult');
+        const gheeResult = document.getElementById('gheeResult');
+        const gheeDetails = document.getElementById('gheeDetails');
+        const amountDetails = document.getElementById('amountDetails');
+        const gheeQR = document.getElementById('gheeQR');
+        const amountQR = document.getElementById('amountQR');
+        const downloadGheeQR = document.getElementById('downloadGheeQR');
+        const downloadAmountQR = document.getElementById('downloadAmountQR');
+        
+        // Toggle main QR code
+        toggleQRBtn.addEventListener('click', () => {
+            if (mainQRContainer.style.display === 'none') {
+                mainQRContainer.style.display = 'flex';
+                generateQRCode(mainQR, 0, true);
+            } else {
+                mainQRContainer.style.display = 'none';
+            }
+        });
+        
+        // Set price button event listener
+        setPriceBtn.addEventListener('click', () => {
+            const newPrice = parseFloat(priceInput.value);
+            if (!isNaN(newPrice) && newPrice > 0) {
+                currentPrice = newPrice;
+                currentPriceValue.textContent = currentPrice;
+                priceInput.value = '';
+            }
+        });
+        
+        // Calculate amount from ghee
+        calculateAmountBtn.addEventListener('click', () => {
+            const gheeGrams = parseFloat(gheeInput.value);
+            if (!isNaN(gheeGrams) && gheeGrams > 0) {
+                const amount = (gheeGrams * currentPrice) / 1000;
+                amountResult.textContent = `${amount.toFixed(2)} ₹`;
+                gheeDetails.textContent = `${gheeGrams}g at ${currentPrice} ₹/kg`;
+                
+                // Generate QR with remark
+                const remark = `Qty: ${gheeGrams}g and Price: ${currentPrice}`;
+                generateQRCode(gheeQR, amount, false, remark);
+            }
+        });
+        
+        // Calculate ghee from amount
+        calculateGheeBtn.addEventListener('click', () => {
+            const amount = parseFloat(amountInput.value);
+            if (!isNaN(amount) && amount > 0) {
+                const gheeGrams = (amount * 1000) / currentPrice;
+                gheeResult.textContent = `${gheeGrams.toFixed(2)} g`;
+                amountDetails.textContent = `₹${amount} at ${currentPrice} ₹/kg`;
+                
+                // Generate QR with remark
+                const remark = `Qty: ${gheeGrams.toFixed(0)}g and Price: ${currentPrice}`;
+                generateQRCode(amountQR, amount, false, remark);
+            }
+        });
+        
+        // Generate QR code function with remark parameter
+        function generateQRCode(element, amount, isMain = false, remark = '') {
+            // Clear previous QR code
+            element.innerHTML = '';
+            
+            // Create a canvas
+            const canvas = document.createElement('canvas');
+            element.appendChild(canvas);
+            
+            // Create payment string for UPI with remark
+            let paymentStr = `upi://pay?pa=${upiId}&pn=Ghee%20Merchant`;
+            
+            if (!isMain && amount > 0) {
+                paymentStr += `&am=${amount}&cu=INR`;
+                
+                // Add remark to the payment URL if provided
+                if (remark) {
+                    // Encode the remark for URL (this will appear in the payment app's remark field)
+                    const encodedRemark = encodeURIComponent(remark);
+                    paymentStr += `&tn=${encodedRemark}`;
+                }
+            }
+            
+            // Generate QR code
+            QRCode.toCanvas(canvas, paymentStr, {
+                width: 150,
+                height: 150,
+                margin: 1,
+                color: {
+                    dark: '#000000',
+                    light: '#ffffff'
+                }
+            }, function(error) {
+                if (error) console.error(error);
+            });
+        }
+        
+        // Download QR code with details
+        function downloadQRCodeWithDetails(element, type, amount, details) {
+            const canvas = element.querySelector('canvas');
+            if (!canvas) return;
+            
+            // Create a new canvas to combine QR code and details
+            const combinedCanvas = document.createElement('canvas');
+            const ctx = combinedCanvas.getContext('2d');
+            
+            // Set dimensions for the combined canvas
+            combinedCanvas.width = 300;
+            combinedCanvas.height = 400;
+            
+            // Fill background
+            ctx.fillStyle = '#fffaf0';
+            ctx.fillRect(0, 0, combinedCanvas.width, combinedCanvas.height);
+            
+            // Draw title
+            ctx.fillStyle = '#e67e22';
+            ctx.font = 'bold 20px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Ghee Purchase Details', combinedCanvas.width / 2, 30);
+            
+            // Draw details
+            ctx.fillStyle = '#000000';
+            ctx.font = '14px Arial';
+            const detailsLines = details.split(' ');
+            let yPos = 60;
+            
+            // Draw each line of details
+            let currentLine = '';
+            for (const word of detailsLines) {
+                if (currentLine.length + word.length > 35) {
+                    ctx.fillText(currentLine, combinedCanvas.width / 2, yPos);
+                    yPos += 20;
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            }
+            ctx.fillText(currentLine, combinedCanvas.width / 2, yPos);
+            
+            // Draw current price
+            ctx.fillText(`Current Price: ${currentPrice} ₹/kg`, combinedCanvas.width / 2, yPos + 30);
+            
+            // Draw amount to pay
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText(`Amount to Pay: ${amount.toFixed(2)} ₹`, combinedCanvas.width / 2, yPos + 60);
+            
+            // Draw QR code
+            ctx.drawImage(canvas, (combinedCanvas.width - 150) / 2, yPos + 80, 150, 150);
+            
+            // Draw UPI ID
+            ctx.font = '12px Arial';
+            ctx.fillText(`UPI ID: ${upiId}`, combinedCanvas.width / 2, yPos + 250);
+            
+            // Create download link
+            const link = document.createElement('a');
+            link.download = `ghee_${type}_${amount}.png`;
+            link.href = combinedCanvas.toDataURL('image/png');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        // Set up download buttons
+        downloadGheeQR.addEventListener('click', () => {
+            const gheeGrams = parseFloat(gheeInput.value);
+            if (!isNaN(gheeGrams) && gheeGrams > 0) {
+                const amount = (gheeGrams * currentPrice) / 1000;
+                const details = `Quantity: ${gheeGrams} grams`;
+                downloadQRCodeWithDetails(gheeQR, 'ghee', amount, details);
+            }
+        });
+        
+        downloadAmountQR.addEventListener('click', () => {
+            const amount = parseFloat(amountInput.value);
+            if (!isNaN(amount) && amount > 0) {
+                const gheeGrams = (amount * 1000) / currentPrice;
+                const details = `Quantity: ${gheeGrams.toFixed(0)} grams`;
+                downloadQRCodeWithDetails(amountQR, 'amount', amount, details);
+            }
+        });
+        
+        // Initialize with default QR codes
+        window.onload = function() {
+            generateQRCode(gheeQR, 0);
+            generateQRCode(amountQR, 0);
+        };
+    </script>
+</body>
+</html>
