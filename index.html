@@ -6,252 +6,251 @@
     <title>Ghee Calculator</title>
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            overflow-x: auto;
-            max-width: 1500px;
-        }
-        
-        .container {
-            width: 900px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            margin-top: 20px;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        h1 {
-            color: #e67e22;
-            margin-bottom: 15px;
-            font-size: 2.5rem;
-        }
-        
-        .emoji-title {
-            font-size: 3rem;
-            margin-bottom: 10px;
-        }
-        
-        .main-qr-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-        
-        .toggle-qr-btn {
-            background: #3498db;
-            margin-bottom: 15px;
-            padding: 12px 20px;
-            border-radius: 10px;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: background 0.3s;
-        }
-        
-        .toggle-qr-btn:hover {
-            background: #2980b9;
-        }
-        
-        .main-qr-container {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            background: #fffaf0;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .price-control {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: #fffaf0;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .input-group {
-            display: flex;
-            width: 100%;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        
-        input {
-            padding: 12px 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
-            width: 200px;
-            transition: border-color 0.3s;
-        }
-        
-        input:focus {
-            border-color: #e67e22;
-            outline: none;
-        }
-        
-        button {
-            background: #e67e22;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: background 0.3s;
-        }
-        
-        button:hover {
-            background: #d35400;
-        }
-        
-        .download-btn {
-            background: #27ae60;
-            margin-top: 15px;
-        }
-        
-        .download-btn:hover {
-            background: #219653;
-        }
-        
-        .calculator {
-            display: flex;
-            gap: 30px;
-            justify-content: space-between;
-        }
-        
-        .calc-section {
-            width: 48%;
-            background: #fffaf0;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .section-title {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            color: #e67e22;
-            font-size: 1.5rem;
-        }
-        
-        .section-title span {
-            font-size: 2rem;
-        }
-        
-        .input-container {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 20px;
-        }
-        
-        .input-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .input-row input {
-            flex: 1;
-        }
-        
-        .result {
-            margin-top: 20px;
-            padding: 15px;
-            background: white;
-            border-radius: 10px;
-            text-align: center;
-            font-size: 1.2rem;
-            min-height: 80px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .result-value {
-            font-weight: bold;
-            color: #e67e22;
-            font-size: 1.5rem;
-            margin-top: 5px;
-        }
-        
-        .qr-container {
-            margin-top: 20px;
-            padding: 15px;
-            background: white;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .qr-code {
-            width: 150px;
-            height: 150px;
-            margin: 15px 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .current-price {
-            margin-top: 10px;
-            font-size: 1rem;
-            color: #7f8c8d;
-        }
-        
-        .price-value {
-            font-weight: bold;
-            color: #e67e22;
-        }
-        
-        .details {
-            margin-top: 10px;
-            font-size: 0.9rem;
-            text-align: center;
-            color: #7f8c8d;
-        }
-        
-        .payment-info {
-            margin-top: 10px;
-            font-size: 0.8rem;
-            color: #3498db;
-            text-align: center;
-            max-width: 250px;
-        }
-    </style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px; /* Reduced padding */
+        overflow-x: hidden; /* Prevent horizontal scroll */
+    }
+
+    .container {
+        width: 95%; /* Fluid width */
+        max-width: 900px; /* Max-width for larger screens */
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 20px; /* Reduced padding */
+        margin-top: 10px;
+    }
+
+    header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    h1 {
+        color: #e67e22;
+        margin-bottom: 10px;
+        font-size: 2rem; /* Adjusted font size */
+    }
+
+    .emoji-title {
+        font-size: 2.5rem; /* Adjusted font size */
+        margin-bottom: 5px;
+    }
+
+    .main-qr-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .toggle-qr-btn {
+        background: #3498db;
+        margin-bottom: 10px;
+        padding: 10px 15px;
+        border-radius: 10px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: background 0.3s;
+    }
+
+    .toggle-qr-btn:hover {
+        background: #2980b9;
+    }
+
+    .main-qr-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+        background: #fffaf0;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .price-control {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 15px;
+        background: #fffaf0;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .input-group {
+        display: flex;
+        flex-direction: column; /* Stack inputs */
+        width: 100%;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    input {
+        padding: 10px 12px;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        font-size: 14px;
+        width: 100%; /* Full width */
+        transition: border-color 0.3s;
+    }
+
+    input:focus {
+        border-color: #e67e22;
+        outline: none;
+    }
+
+    button {
+        background: #e67e22;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: background 0.3s;
+        width: 100%; /* Full width */
+    }
+
+    button:hover {
+        background: #d35400;
+    }
+
+    .download-btn {
+        background: #27ae60;
+        margin-top: 10px;
+    }
+
+    .download-btn:hover {
+        background: #219653;
+    }
+
+    .calculator {
+        display: flex;
+        flex-direction: column; /* Stack sections vertically */
+        gap: 20px;
+    }
+
+    .calc-section {
+        width: 100%; /* Make each section fill the width */
+        background: #fffaf0;
+        padding: 15px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 15px;
+        color: #e67e22;
+        font-size: 1.2rem;
+    }
+
+    .section-title span {
+        font-size: 1.5rem;
+    }
+
+    .input-container {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+    }
+
+    .input-row {
+        display: flex;
+        flex-direction: column; /* Stack inputs and button */
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .result {
+        margin-top: 15px;
+        padding: 10px;
+        background: white;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 1.1rem;
+        min-height: 70px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .result-value {
+        font-weight: bold;
+        color: #e67e22;
+        font-size: 1.3rem;
+        margin-top: 5px;
+    }
+
+    .qr-container {
+        margin-top: 15px;
+        padding: 10px;
+        background: white;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .qr-code {
+        width: 120px; /* Reduced size for mobile */
+        height: 120px;
+        margin: 10px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .current-price {
+        margin-top: 8px;
+        font-size: 0.9rem;
+        color: #7f8c8d;
+    }
+
+    .price-value {
+        font-weight: bold;
+        color: #e67e22;
+    }
+
+    .details {
+        margin-top: 8px;
+        font-size: 0.8rem;
+        text-align: center;
+        color: #7f8c8d;
+    }
+
+    .payment-info {
+        margin-top: 8px;
+        font-size: 0.7rem;
+        color: #3498db;
+        text-align: center;
+        max-width: 250px;
+    }
+</style>
+
 </head>
 <body>
     <header>
